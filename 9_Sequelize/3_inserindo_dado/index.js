@@ -1,0 +1,78 @@
+const express = require(`express`)
+const exbhbs = require(`express-handlebars`)
+const conn = require(`./db/conn`)
+
+const User = require(`./models/User`)
+
+const app = express()
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  }),
+)
+
+app.use(express.json())
+
+app.engine(`handlebars`, exbhbs())
+app.set(`view engine`, `handlebars`)
+
+app.use(express.static(`public`))
+
+//criando rota de cadastrar usuário
+app.get(`/users/create`, (req, res) => {
+  res.render(`adduser`)
+})
+
+//Rota para criar o insert de dados, preimeiro o POST na URL e método Create herdado do sequelize
+
+app.post(`/users/create`, async (req, res) => {
+  const name = req.body.name
+  const occupation = req.body.occupation
+  //utilizar let ao inves de contraint pois o valor pode ser alterado dependendo do que chega da req
+  let newsletter = req.body.newsletter
+
+  if (newsletter === `on`) {
+    newsletter = true
+  } else {
+    newsletter = false
+  }
+
+  console.log(req.body)
+
+  await User.create({ name, occupation, newsletter })
+
+  res.redirect(`/`)
+})
+
+//criação da rota da home
+app.get(`/`, (req, res) => {
+  res.render(`home`)
+})
+
+conn
+  .sync()
+  .then(() => {
+    app.listen(3000)
+  })
+  .catch((err) => console.log(err))
+
+//com o uso do connection POOL, os dados para conexão são registrados em outra instância da estrutura de diretórios.
+
+// //declaração da variável de conexão com o banco
+// const conn = mysql.createConnection({
+//   host: `localhost`,
+//   user: `root`,
+//   password: ``,
+//   database: `nodemysql`,
+// })
+
+// //método para iniciar a conexão com o banco passando o objeto criado como argumento
+// conn.connect(function (err) {
+//   if (err) {
+//     console.log(err)
+//   }
+
+//   console.log(`Conectou ao MySql!`)
+
+// })
