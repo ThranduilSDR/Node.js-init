@@ -111,6 +111,9 @@ app.get(`/`, async (req, res) => {
 
 conn
   .sync()
+  //utilizando o force indicado abaixo, serve para recriar toda a estrutura da tabela, deste modo todos os dados são apagados
+  //ideal para ambiente isolado, quando se insere novos campos e relacionamentos, e deseja resetar a db
+  //.sync({ force: true })
   .then(() => {
     app.listen(3000)
   })

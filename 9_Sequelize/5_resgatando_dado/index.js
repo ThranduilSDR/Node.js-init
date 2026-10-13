@@ -45,7 +45,7 @@ app.post(`/users/create`, async (req, res) => {
   res.redirect(`/`)
 })
 
-//Criando rota URL dinamica e código para alterar um registro, que aceita um ID na url
+//Criando rota URL dinamica e código para trazer e consultar um registro, que aceita um ID na url
 app.get(`/users/:id`, async (req, res) => {
   const id = req.params.id
 
