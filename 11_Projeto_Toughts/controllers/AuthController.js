@@ -7,6 +7,7 @@ module.exports = class UserController {
     res.render("auth/login")
   }
 
+  //método para login de um usuário existente
   static async loginPost(req, res) {
     const { email, password } = req.body
 
@@ -21,7 +22,7 @@ module.exports = class UserController {
       return
     }
 
-    // compare password
+    // compare password - check if passwords match
     const passwordMatch = bcrypt.compareSync(password, user.password)
 
     if (!passwordMatch) {
@@ -42,6 +43,8 @@ module.exports = class UserController {
     })
   }
 
+  //método para registro de um usuário novo
+
   static register(req, res) {
     res.render("auth/register")
   }
@@ -57,7 +60,7 @@ module.exports = class UserController {
       return
     }
 
-    // email validation
+    // email validation - check if user exists
     const checkIfUserExists = await User.findOne({ where: { email: email } })
 
     if (checkIfUserExists) {
@@ -67,6 +70,7 @@ module.exports = class UserController {
       return
     }
 
+    // create a password
     const salt = bcrypt.genSaltSync(10)
     const hashedPassword = bcrypt.hashSync(password, salt)
 
@@ -76,15 +80,17 @@ module.exports = class UserController {
       password: hashedPassword,
     }
 
-    User.create(user)
+    //User.create(user)
+    const createdUser = await User.create(user)
+
       .then((user) => {
         // initialize session
-        req.session.userid = user.id
+        //req.session.userid = user.id
+        req.session.userid = createdUser.id
 
         // console.log('salvou dado')
         // console.log(req.session.userid)
-
-        req.session.userid = user.id
+        //req.session.userid = user.id
 
         req.flash("message", "Cadastro realizado com sucesso!")
 
@@ -95,6 +101,7 @@ module.exports = class UserController {
       .catch((err) => console.log(err))
   }
 
+  ////método para sair do sistema e encerrar a sessão
   static logout(req, res) {
     req.session.destroy()
     res.redirect("/login")
