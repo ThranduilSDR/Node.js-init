@@ -13,6 +13,13 @@ const conn = require("./db/conn")
 const Tought = require("./models/Tought")
 const User = require(`./models/User`)
 
+//import Routes
+const toughtsRoutes = require("./routes/toughtsRoutes")
+const authRoutes = require("./routes/authRoutes")
+
+//Import Controller
+const ToughController = require("./controllers/ToughtController")
+
 //definindo a template engine
 app.engine("handlebars", exphbs())
 app.set("view engine", "handlebars")
@@ -63,6 +70,12 @@ app.use((req, res, next) => {
 
   next()
 })
+
+//Routes
+app.use("/toughts", toughtsRoutes)
+app.use("/", authRoutes)
+
+app.get("/", ToughController.showToughts)
 
 //chamada da aplicação
 conn
