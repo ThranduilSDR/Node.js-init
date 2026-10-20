@@ -24,7 +24,7 @@ const ToughController = require("./controllers/ToughtController")
 app.engine("handlebars", exphbs())
 app.set("view engine", "handlebars")
 
-//recebendo resposta do body
+//recebendo resposta do body (middleware para ler o que vem no corpo da requisiçào)
 app.use(
   express.urlencoded({
     extended: true,
