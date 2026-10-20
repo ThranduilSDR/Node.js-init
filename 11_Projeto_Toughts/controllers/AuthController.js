@@ -80,25 +80,25 @@ module.exports = class UserController {
       password: hashedPassword,
     }
 
-    //User.create(user)
-    const createdUser = await User.create(user)
+    //Criação do usuário junto ao banco por meio do sequelize
+    try {
+      const createdUser = await User.create(user)
 
-      .then((user) => {
-        // initialize session
-        //req.session.userid = user.id
-        req.session.userid = createdUser.id
+      // initialize session
+      req.session.userid = createdUser.id
 
-        // console.log('salvou dado')
-        // console.log(req.session.userid)
-        //req.session.userid = user.id
+      // console.log('salvou dado')
+      // console.log(req.session.userid)
 
-        req.flash("message", "Cadastro realizado com sucesso!")
+      req.flash("message", "Cadastro realizado com sucesso!")
 
-        req.session.save(() => {
-          res.redirect("/")
-        })
+      //salvando a sessão do usuário novo após preenchimento do cadastro para já continuar logado
+      req.session.save(() => {
+        res.redirect("/")
       })
-      .catch((err) => console.log(err))
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   ////método para sair do sistema e encerrar a sessão
