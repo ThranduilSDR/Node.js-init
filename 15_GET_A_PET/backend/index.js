@@ -3,6 +3,13 @@ const cors = require(`cors`)
 
 const app = express()
 
+// Importando o Swagger
+const swaggerUi = require("swagger-ui-express")
+const swaggerDocument = require("./swagger.json")
+
+// Configurando a rota da documentação
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
 //config JSON response
 app.use(express.json())
 

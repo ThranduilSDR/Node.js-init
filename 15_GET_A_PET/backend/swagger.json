@@ -1,0 +1,94 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Get a Pet",
+    "version": "1.0.0",
+    "description": "Documentação da API do projeto Get a Pet"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Servidor Local"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Página Inicial",
+        "description": "Rota raiz da aplicação.",
+        "responses": {
+          "200": {
+            "description": "Sucesso ao carregar a página"
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "summary": "Registar novo utilizador",
+        "description": "Cria uma nova conta de utilizador no sistema com os dados enviados.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "Emanuel Vitor" },
+                  "email": { "type": "string", "example": "emanuel@email.com" },
+                  "phone": { "type": "string", "example": "11999999999" },
+                  "password": { "type": "string", "example": "123456" },
+                  "confirmpassword": { "type": "string", "example": "123456" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Utilizador criado com sucesso" },
+          "422": {
+            "description": "Erro de validação de dados ou passwords não coincidem"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Login de utilizador",
+        "description": "Autentica o utilizador no sistema e retorna um token JWT.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "example": "emanuel@email.com" },
+                  "password": { "type": "string", "example": "123456" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Autenticação efetuada com sucesso e token gerado"
+          },
+          "422": {
+            "description": "Utilizador não encontrado ou password incorreta"
+          }
+        }
+      }
+    },
+    "/users/checkuser": {
+      "get": {
+        "summary": "Verificar utilizador atual",
+        "description": "Identifica o utilizador autenticado com base no token JWT enviado no cabeçalho.",
+        "responses": {
+          "200": { "description": "Utilizador retornado com sucesso" },
+          "401": { "description": "Acesso negado / Token inválido ou ausente" }
+        }
+      }
+    }
+  }
+}
