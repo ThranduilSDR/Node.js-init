@@ -132,6 +132,7 @@ module.exports = class UserController {
     res.status(200).send(currentUser)
   }
 
+  //Validar usuário por ID
   static async getUserById(req, res) {
     const id = req.params.id
 
