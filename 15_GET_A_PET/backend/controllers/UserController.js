@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken")
 // helpers
 const createUserToken = require("../helpers/create-user-token")
 const getToken = require(`../helpers/get-token`)
+const getUserByToken = require(`../helpers/get-user-by-token`)
 
 module.exports = class UserController {
   static async register(req, res) {
@@ -132,11 +133,11 @@ module.exports = class UserController {
     res.status(200).send(currentUser)
   }
 
-  //Validar usuário por ID
+  //Validar usuário por ID e removendo a senha do objeto que será passado
   static async getUserById(req, res) {
     const id = req.params.id
 
-    const user = await User.findById(id)
+    const user = await User.findById(id).select(`-password`)
 
     if (!user) {
       res.status(422).json({ message: "Usuário não encontrado!" })
@@ -144,5 +145,58 @@ module.exports = class UserController {
     }
 
     res.status(200).json({ user })
+  }
+
+  static async editUser(req, res) {
+    const id = req.params.id
+
+    //check if user exists
+    const token = getToken(req)
+    const user = await getUserByToken(token)
+
+    const { name, email, phone, password, confirmpassword } = req.body
+
+    let image = ``
+
+    //validations
+    if (!name) {
+      res.status(422).json({ message: "O nome é obrigatório!" })
+      return
+    }
+
+    if (!email) {
+      res.status(422).json({ message: "O email é obrigatório!" })
+      return
+    }
+
+    //check if email has already taken
+    const userExists = await User.findOne({ email: email })
+
+    //validar se o email recebido é o mesmo do cadastrado
+    // ( se o e-mail já está cadastrado para outro usuário) e se o usuário existe
+    if (user.email !== email && userExists) {
+      res.status(422).json({ message: "Por favor, utilize outro e-mail!" })
+      return
+    }
+
+    user.email = email
+
+    if (!phone) {
+      res.status(422).json({ message: "O telefone é obrigatório!" })
+      return
+    }
+
+    if (!password) {
+      res.status(422).json({ message: "A senha é obrigatória!" })
+      return
+    }
+
+    if (!confirmpassword) {
+      res.status(422).json({ message: "A confirmação de senha é obrigatória!" })
+      return
+    }
+
+    res.status(200).json({ message: "Deu certo update!!" })
+    return
   }
 }
