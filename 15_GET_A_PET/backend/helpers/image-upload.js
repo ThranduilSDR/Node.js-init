@@ -8,6 +8,7 @@ const imageStorage = multer.diskStorage({
 
     console.log(req)
 
+    //Selecionar a pasta que será salva os arquivos de imagem
     if (req.baseUrl.includes("users")) {
       folder = "users"
     } else if (req.baseUrl.includes("pets")) {
