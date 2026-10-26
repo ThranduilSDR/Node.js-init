@@ -18,7 +18,14 @@ const imageStorage = multer.diskStorage({
   },
   //função para registar o nome das imagens - data + extensào
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname))
+    cb(
+      null,
+      Date.now() +
+        //adicionando um numero randomizado para compor o nome da image afim de que
+        //não haja redundância de nomes e alguns arquivos falhem
+        String(Math.floor(Math.random() * 1000)) +
+        path.extname(file.originalname),
+    )
   },
 })
 
