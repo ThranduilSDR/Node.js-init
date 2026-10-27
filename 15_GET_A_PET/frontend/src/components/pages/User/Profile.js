@@ -1,25 +1,25 @@
-import api from '../../../utils/api'
+import api from "../../../utils/api"
 
-import Input from '../../form/Input'
+import Input from "../../form/Input"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react"
 
-import styles from './Profile.module.css'
-import formStyles from '../../form/Form.module.css'
+import styles from "./Profile.module.css"
+import formStyles from "../../form/Form.module.css"
 
 /* hooks */
-import useFlashMessage from '../../../hooks/useFlashMessage'
-import RoundedImage from '../../layout/RoundedImage'
+import useFlashMessage from "../../../hooks/useFlashMessage"
+import RoundedImage from "../../layout/RoundedImage"
 
 function Profile() {
   const [user, setUser] = useState({})
   const [preview, setPreview] = useState()
-  const [token] = useState(localStorage.getItem('token') || '')
+  const [token] = useState(localStorage.getItem("token") || "")
   const { setFlashMessage } = useFlashMessage()
 
   useEffect(() => {
     api
-      .get('/users/checkuser', {
+      .get("/users/checkuser", {
         headers: {
           Authorization: `Bearer ${JSON.parse(token)}`,
         },
@@ -41,7 +41,7 @@ function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    let msgType = 'success'
+    let msgType = "success"
 
     const formData = new FormData()
 
@@ -49,13 +49,13 @@ function Profile() {
       formData.append(key, user[key]),
     )
 
-    formData.append('user', userFormData)
+    formData.append("user", userFormData)
 
     const data = await api
       .patch(`/users/edit/${user._id}`, formData, {
         headers: {
           Authorization: `Bearer ${JSON.parse(token)}`,
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((response) => {
@@ -64,7 +64,7 @@ function Profile() {
       })
       .catch((err) => {
         console.log(err)
-        msgType = 'error'
+        msgType = "error"
         return err.response.data
       })
 
@@ -99,7 +99,7 @@ function Profile() {
           name="email"
           placeholder="Digite o e-mail"
           handleOnChange={handleChange}
-          value={user.email || ''}
+          value={user.email || ""}
         />
         <Input
           text="Nome"
@@ -107,7 +107,7 @@ function Profile() {
           name="name"
           placeholder="Digite o nome"
           handleOnChange={handleChange}
-          value={user.name || ''}
+          value={user.name || ""}
         />
         <Input
           text="Telefone"
@@ -115,7 +115,7 @@ function Profile() {
           name="phone"
           placeholder="Digite o seu telefone"
           handleOnChange={handleChange}
-          value={user.phone || ''}
+          value={user.phone || ""}
         />
         <Input
           text="Senha"

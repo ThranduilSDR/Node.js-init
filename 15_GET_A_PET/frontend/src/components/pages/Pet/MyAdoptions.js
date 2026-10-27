@@ -1,18 +1,18 @@
-import api from '../../../utils/api'
+import api from "../../../utils/api"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react"
 
-import styles from './Dashboard.module.css'
+import styles from "./Dashboard.module.css"
 
-import RoundedImage from '../../layout/RoundedImage'
+import RoundedImage from "../../layout/RoundedImage"
 
 function MyAdoptions() {
   const [pets, setPets] = useState([])
-  const [token] = useState(localStorage.getItem('token') || '')
+  const [token] = useState(localStorage.getItem("token") || "")
 
   useEffect(() => {
     api
-      .get('/pets/myadoptions', {
+      .get("/pets/myadoptions", {
         headers: {
           Authorization: `Bearer ${JSON.parse(token)}`,
         },
