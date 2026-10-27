@@ -1,4 +1,4 @@
-import styles from './Input.module.css'
+import styles from "./Input.module.css"
 
 function Input({
   type,
@@ -19,7 +19,7 @@ function Input({
         placeholder={placeholder}
         onChange={handleOnChange}
         value={value}
-        {...(multiple ? { multiple } : '')}
+        {...(multiple ? { multiple } : "")}
       />
     </div>
   )

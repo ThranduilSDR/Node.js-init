@@ -1,14 +1,14 @@
-import { useState } from 'react'
+import { useState } from "react"
 
-import formStyles from './Form.module.css'
+import formStyles from "./Form.module.css"
 
-import Input from './Input'
-import Select from './Select'
+import Input from "./Input"
+import Select from "./Select"
 
 function PetForm({ handleSubmit, petData, btnText }) {
   const [pet, setPet] = useState(petData || {})
   const [preview, setPreview] = useState([])
-  const colors = ['Branco', 'Preto', 'Cinza', 'Caramelo']
+  const colors = ["Branco", "Preto", "Cinza", "Caramelo"]
 
   function onFileChange(e) {
     console.log(Array.from(e.target.files))
@@ -65,7 +65,7 @@ function PetForm({ handleSubmit, petData, btnText }) {
         name="name"
         placeholder="Digite o nome"
         handleOnChange={handleChange}
-        value={pet.name || ''}
+        value={pet.name || ""}
       />
       <Input
         text="Idade do Pet"
@@ -73,22 +73,22 @@ function PetForm({ handleSubmit, petData, btnText }) {
         name="age"
         placeholder="Digite a idade"
         handleOnChange={handleChange}
-        value={pet.age || ''}
+        value={pet.age || ""}
       />
       <Input
         text="Peso do Pet"
         type="number"
         name="weight"
         placeholder="Digite o peso aproximado"
-        value={pet.weight || ''}
+        value={pet.weight || ""}
         handleOnChange={handleChange}
       />
       <Select
         name="color"
-        text="Selecione a categoria"
+        text="Selecione a cor"
         options={colors}
         handleOnChange={handleColor}
-        value={pet.color || ''}
+        value={pet.color || ""}
       />
       <input type="submit" value={btnText} />
     </form>
